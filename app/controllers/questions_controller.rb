@@ -2,6 +2,10 @@ class QuestionsController < ApplicationController
   expose :questions, ->{ Question.all }
   expose :question
 
+  def index
+    @questions = questions
+  end
+
   def new; end
 
   def create
