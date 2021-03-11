@@ -22,6 +22,7 @@ feature 'User can write answer for question', %q{
       click_on 'Answer'
 
       expect(page).to have_content 'Answer created successfully'
+      # checks if user can see answers for question
       expect(page).to have_content 'text text text'
     end
 
