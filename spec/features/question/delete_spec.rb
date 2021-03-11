@@ -12,7 +12,7 @@ feature 'Author can delete question', %q{
   scenario 'author tries to delete question' do
     sign_in(users[0])
     users[0].questions.push(question)
-    puts question.inspect
+
     visit question_path(question)
 
     click_on 'Delete question'
@@ -23,7 +23,7 @@ feature 'Author can delete question', %q{
 
   scenario 'not author tries to delete question' do
     sign_in(users[1])
-    puts question.inspect
+
     visit question_path(question)
 
     click_on 'Delete question'
