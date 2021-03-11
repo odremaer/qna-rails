@@ -1,8 +1,11 @@
 h1= @question.title
 p= @question.body
+= link_to 'Delete question', question_path(@question), method: :delete
 
 ul
+  li <b>Answers</b>
   = render @question.answers
+
 = render 'shared/errors', resource: @answer
 = form_with model: [@question, @answer], local: true do |f|
   = f.label :body

@@ -1,2 +1,4 @@
-li
-  = answer.body
+- if answer.persisted?
+  li
+    = answer.body
+    = link_to 'Delete answer', answer_path(answer), method: :delete

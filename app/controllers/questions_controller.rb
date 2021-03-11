@@ -21,9 +21,21 @@ class QuestionsController < ApplicationController
     @question = Question.new(question_params)
 
     if @question.save
+      current_user.questions.push(@question)
       redirect_to @question, notice: 'Your question successfully created.'
     else
       render :new
+    end
+  end
+
+  def destroy
+    if current_user.is_author?(question)
+      flash[:notice] = 'Question deleted successfully'
+      question.destroy
+      redirect_to questions_path
+    else
+      flash[:notice] = 'You are not author of this question'
+      redirect_to question_path(question)
     end
   end
 

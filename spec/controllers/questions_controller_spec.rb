@@ -29,7 +29,7 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'POST #create' do
     before { login(user) }
-    
+
     context 'with valid attributes' do
       it 'saves a new question in the database' do
         expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
@@ -52,6 +52,31 @@ RSpec.describe QuestionsController, type: :controller do
        post :create, params: { question: attributes_for(:question, :invalid_question) }
        expect(response).to render_template :new
      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    before { login(user) }
+    let!(:question) { create(:question) }
+
+    it 'deletes the question if user is author' do
+      user.questions.push(question)
+      expect { delete :destroy, params: {id: question} }.to change(Question, :count).by(-1)
+    end
+
+    it 'does not delete question if user is not author' do
+      expect { delete :destroy, params: {id: question} }.to_not change(Question, :count)
+    end
+
+    it 'redirects to question index if question deleted' do
+      user.questions.push(question)
+      expect { delete :destroy, params: {id: question} }.to change(Question, :count).by(-1)
+      expect(response).to redirect_to questions_path
+    end
+
+    it 'redirects to current question if question wasnt deleted' do
+      expect { delete :destroy, params: {id: question} }.to_not change(Question, :count)
+      expect(response).to redirect_to assigns(:question)
     end
   end
 end

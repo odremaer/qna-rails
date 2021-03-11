@@ -8,10 +8,24 @@ class AnswersController < ApplicationController
     @answer = @question.answers.build(answer_params)
 
     if @answer.save
+      current_user.answers.push(@answer)
       redirect_to question_path(@question), notice: 'Answer created successfully'
     else
       render 'questions/show'
     end
+  end
+
+  def destroy
+    @answer = Answer.find(params[:id])
+    
+    if current_user.is_author?(@answer)
+      flash[:notice] = 'Answer deleted successfully'
+      @answer.destroy
+    else
+      flash[:notice] = 'You are not author of this answer'
+    end
+
+    redirect_to question_path(@answer.question)
   end
 
   private
