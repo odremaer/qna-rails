@@ -11,15 +11,15 @@ questions = Question.create!([
   ])
 
   Answer.create!([
-    {body: "2000", question: questions[0]},
-    {body: "1995", question: questions[0]},
-    {body: "1990", question: questions[0]},
+    {body: "2000", question: questions[0], user: users[0]},
+    {body: "1995", question: questions[0], user: users[0]},
+    {body: "1990", question: questions[0], user: users[0]},
 
-    {body: "rb", question: questions[1]},
-    {body: "exe", question: questions[1]},
-    {body: "c", question: questions[1]},
+    {body: "rb", question: questions[1], user: users[1]},
+    {body: "exe", question: questions[1], user: users[1]},
+    {body: "c", question: questions[1], user: users[1]},
 
-    {body: "Добавляет элементы в начало массива", question: questions[2]},
-    {body: "Добавляет элементы в конец массива", question: questions[2]},
-    {body: "Очищает массив", question: questions[2]}
+    {body: "Добавляет элементы в начало массива", question: questions[2], user: users[2]},
+    {body: "Добавляет элементы в конец массива", question: questions[2], user: users[2]},
+    {body: "Очищает массив", question: questions[2], user: users[2]}
   ])
