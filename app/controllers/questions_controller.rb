@@ -12,6 +12,11 @@ class QuestionsController < ApplicationController
     @question = question
   end
 
+  def show
+    @question = question
+    @answer = question.answers.new
+  end
+
   def create
     @question = Question.new(question_params)
 

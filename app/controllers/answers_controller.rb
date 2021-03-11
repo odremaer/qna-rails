@@ -1,4 +1,6 @@
 class AnswersController < ApplicationController
+  before_action :authenticate_user!
+
   def new; end
 
   def create
@@ -6,9 +8,9 @@ class AnswersController < ApplicationController
     @answer = @question.answers.build(answer_params)
 
     if @answer.save
-      redirect_to answer_path(@answer)
+      redirect_to question_path(@question), notice: 'Answer created successfully'
     else
-      render :new
+      render 'questions/show'
     end
   end
 
