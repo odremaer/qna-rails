@@ -59,24 +59,28 @@ RSpec.describe QuestionsController, type: :controller do
     before { login(user) }
     let!(:question) { create(:question) }
 
-    it 'deletes the question if user is author' do
-      user.questions.push(question)
-      expect { delete :destroy, params: {id: question} }.to change(Question, :count).by(-1)
+    context 'author' do
+      it 'deletes the question' do
+        user.questions.push(question)
+        expect { delete :destroy, params: {id: question} }.to change(Question, :count).by(-1)
+      end
+
+      it 'redirects to question index ' do
+        user.questions.push(question)
+        delete :destroy, params: {id: question}
+        expect(response).to redirect_to questions_path
+      end
     end
 
-    it 'does not delete question if user is not author' do
-      expect { delete :destroy, params: {id: question} }.to_not change(Question, :count)
-    end
+    context 'not author' do
+      it 'does not delete question' do
+        expect { delete :destroy, params: {id: question} }.to_not change(Question, :count)
+      end
 
-    it 'redirects to question index if question deleted' do
-      user.questions.push(question)
-      expect { delete :destroy, params: {id: question} }.to change(Question, :count).by(-1)
-      expect(response).to redirect_to questions_path
-    end
-
-    it 'redirects to current question if question wasnt deleted' do
-      expect { delete :destroy, params: {id: question} }.to_not change(Question, :count)
-      expect(response).to redirect_to assigns(:question)
+      it 'redirects to current question' do
+        delete :destroy, params: {id: question}
+        expect(response).to redirect_to assigns(:question)
+      end
     end
   end
 end
