@@ -3,7 +3,8 @@ p= @question.body
 = link_to 'Delete question', question_path(@question), method: :delete
 
 ul
-  li <b>Answers</b>
+  li
+    b Answers
   = render @question.answers
 
 = render 'shared/errors', resource: @answer
