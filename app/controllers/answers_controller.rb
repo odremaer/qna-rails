@@ -4,9 +4,9 @@ class AnswersController < ApplicationController
   def create
     @question = Question.find(params[:question_id])
     @answer = @question.answers.build(answer_params)
-
+    current_user.answers.push(@answer)
+    
     if @answer.save
-      current_user.answers.push(@answer)
       redirect_to question_path(@question), notice: 'Answer created successfully'
     else
       render 'questions/show'
