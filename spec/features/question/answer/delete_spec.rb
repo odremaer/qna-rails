@@ -6,15 +6,14 @@ feature 'Author can delete answer', %q{
   I'd like to be able to delete my answer
 } do
 
+  given(:first_user) { create(:user) }
+  given(:second_user) { create(:user) }
+
   given(:question) { create(:question) }
-  given(:answer) { create(:answer) }
-  given(:users) { create_list(:user, 2) }
+  given!(:answer) { create(:answer, user: first_user, question: question) }
 
   scenario 'author tries to delete answer' do
-    sign_in(users[0])
-
-    question.answers.push(answer)
-    users[0].answers.push(answer)
+    sign_in(first_user)
 
     visit question_path(question)
 
@@ -25,22 +24,16 @@ feature 'Author can delete answer', %q{
   end
 
   scenario 'not author tries to delete answer' do
-    sign_in(users[1])
-    question.answers.push(answer)
+    sign_in(second_user)
 
     visit question_path(question)
 
-    click_on 'Delete answer'
-
-    expect(page).to have_content 'You are not author of this answer'
+    expect(page).to_not have_content 'Delete answer'
   end
 
   scenario 'not signed in user tries to delete question' do
-    question.answers.push(answer)
     visit question_path(question)
 
-    click_on 'Delete answer'
-
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(page).to_not have_content 'Delete answer'
   end
 end
