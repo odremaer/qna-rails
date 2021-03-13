@@ -5,7 +5,7 @@ class AnswersController < ApplicationController
     @question = Question.find(params[:question_id])
     @answer = @question.answers.build(answer_params)
     current_user.answers.push(@answer)
-    
+
     if @answer.save
       redirect_to question_path(@question), notice: 'Answer created successfully'
     else
@@ -16,7 +16,7 @@ class AnswersController < ApplicationController
   def destroy
     @answer = Answer.find(params[:id])
 
-    if current_user.is_author?(@answer)
+    if current_user.author_of?(@answer)
       flash[:notice] = 'Answer deleted successfully'
       @answer.destroy
     else

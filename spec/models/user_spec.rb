@@ -4,13 +4,16 @@ RSpec.describe User, type: :model do
   it { should have_many(:questions).dependent(:destroy) }
   it { should have_many(:answers).dependent(:destroy) }
 
-  it 'should return true or false if user is author or not accordingly' do
-    users = create_list(:user, 2)
-    question = create(:question)
+  let(:user) { create(:user) }
+  let(:question) { create(:question) }
 
-    users[0].questions.push(question)
+  it 'should return true if user is author' do
+    user.questions.push(question)
 
-    expect(users[0].is_author?(question)).to be_truthy
-    expect(users[1].is_author?(question)).to be_falsey
+    expect(user).to be_author_of(question)
+  end
+
+  it 'should return false if user is not an author' do
+    expect(user).to_not be_author_of(question)
   end
 end
