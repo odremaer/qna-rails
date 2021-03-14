@@ -30,6 +30,10 @@ gem 'bootsnap', '>= 1.4.4', require: false
 gem "slim-rails"
 gem 'decent_exposure', '~> 3.0'
 gem 'devise'
+gem 'bootstrap', '~> 5.0.0.beta2'
+gem 'jquery-rails'
+# fixed the "Autoprefixer doesn’t support Node v8.10.0. Update it." error
+gem 'mini_racer'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
