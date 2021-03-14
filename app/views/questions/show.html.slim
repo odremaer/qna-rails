@@ -6,10 +6,13 @@ p= @question.body
 ul
   li
     b Answers
-  = render @question.answers
+  .answers
+    = render @question.answers
 
-= render 'shared/errors', resource: @answer
-= form_with model: [@question, @answer], local: true do |f|
+.answer-errors
+  = render 'shared/errors', resource: @answer
+  
+= form_with model: [@question, @answer], local: false do |f|
   = f.label :body
   = f.text_area :body
 
