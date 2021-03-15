@@ -53,7 +53,7 @@ feature 'User can edit his answer', %q{
     end
 
     context 'not author' do
-      scenario "tries to edit other user's question" do
+      scenario "tries to edit other user's answer" do
         not_author_user = create(:user)
         sign_in(not_author_user)
 
