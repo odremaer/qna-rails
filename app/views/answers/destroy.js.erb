@@ -1,0 +1,3 @@
+<% unless @answer.persisted? %>
+  $('.answers').html('<%= j render @question.answers %>');
+<% end %>

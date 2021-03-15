@@ -38,16 +38,16 @@ RSpec.describe AnswersController, type: :controller do
 
     it 'deletes the answer if user is author' do
       user.answers.push(answer)
-      expect { delete :destroy, params: {id: answer} }.to change(Answer, :count).by(-1)
+      expect { delete :destroy, params: {id: answer}, format: :js }.to change(Answer, :count).by(-1)
     end
 
     it 'does not delete answer if user is not author' do
-      expect { delete :destroy, params: {id: answer} }.to_not change(Answer, :count)
+      expect { delete :destroy, params: {id: answer}, format: :js }.to_not change(Answer, :count)
     end
 
-    it 'redirects to current question' do
-      delete :destroy, params: {id: answer}
-      expect(response).to redirect_to question_path(answer.question)
+    it 'renders destroy template' do
+      delete :destroy, params: {id: answer}, format: :js
+      expect(response).to render_template :destroy
     end
   end
 

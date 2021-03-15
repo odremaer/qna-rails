@@ -1,8 +1,8 @@
 - if answer.persisted?
-  li
+  li id=answer.id
     = answer.body
     - if current_user&.author_of?(answer)
-      = link_to 'Delete answer', answer_path(answer), method: :delete
+      = link_to 'Delete answer', '#', class: 'delete-answer-link', data: { answer_id: answer.id }
       br = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
 
       = form_with model: answer, local: false, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
