@@ -59,7 +59,6 @@ RSpec.describe AnswersController, type: :controller do
       it 'changes answer attributes' do
         patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js
         answer.reload
-        puts answer.body
         expect(answer.body).to eq 'new body'
       end
 
