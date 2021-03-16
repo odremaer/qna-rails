@@ -20,11 +20,17 @@ class AnswersController < ApplicationController
     @answer = Answer.find(params[:id])
     @answer.update(answer_params)
     @question = @answer.question
+    if @question.have_two_best_answers?
+      previous_best_answer = @question.previous_best_answer
+      previous_best_answer.best_answer = false
+      previous_best_answer.save
+    end
+    @question.reload
   end
 
   private
 
   def answer_params
-    params.require(:answer).permit(:body)
+    params.require(:answer).permit(:body, :best_answer)
   end
 end
