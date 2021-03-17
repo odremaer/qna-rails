@@ -1,5 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[ index show ]
+  before_action :set_question, only: %i[ show update ]
 
   expose :questions, ->{ Question.all }
   expose :question
@@ -13,8 +14,7 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    @question = question
-    @answer = question.answers.new
+    @answer = @question.answers.new
   end
 
   def create
@@ -40,13 +40,18 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    @question = Question.find(params[:id])
-    @question.update(question_params)
+    if current_user.author_of?(@question)
+      @question.update(question_params)
+    end
   end
 
   private
 
   def question_params
     params.require(:question).permit(:title, :body)
+  end
+
+  def set_question
+    @question = Question.find(params[:id])
   end
 end
