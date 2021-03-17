@@ -5,22 +5,10 @@ class Question < ApplicationRecord
   validates :title, :body, presence: true
 
   def have_two_best_answers?
-    count = 0
-    self.answers.each do |answer|
-      if answer.best_answer
-        count += 1
-      end
-    end
-    count == 2
+    true if self.answers.where(best_answer: true).count == 2
   end
 
   def previous_best_answer
-    @two_best_answers = []
-    self.answers.each do |answer|
-      if answer.best_answer
-        @two_best_answers << answer
-      end
-    end
-    @two_best_answers[0]
+    self.answers.find_by(best_answer: true)
   end
 end

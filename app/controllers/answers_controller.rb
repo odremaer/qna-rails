@@ -1,5 +1,6 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_answer, only: %i[ destroy update choose_best ]
 
   def create
     @question = Question.find(params[:question_id])
@@ -8,7 +9,6 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    @answer = Answer.find(params[:id])
     @question = @answer.question
 
     if current_user.author_of?(@answer)
@@ -17,20 +17,30 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer = Answer.find(params[:id])
-    @answer.update(answer_params)
-    @question = @answer.question
-    if @question.have_two_best_answers?
-      previous_best_answer = @question.previous_best_answer
-      previous_best_answer.best_answer = false
-      previous_best_answer.save
+    if current_user.author_of?(@answer)
+      @answer.update(answer_params)
     end
-    @question.reload
+
+    @question = @answer.question
+  end
+
+  def choose_best
+    @question = @answer.question
+
+    if current_user.author_of?(@question)
+      @answer.update(params.permit(:best_answer))
+      @answer.change_best_answer
+      @question.reload
+    end
   end
 
   private
 
   def answer_params
     params.require(:answer).permit(:body, :best_answer)
+  end
+
+  def set_answer
+    @answer = Answer.find(params[:id])
   end
 end

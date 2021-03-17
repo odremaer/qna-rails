@@ -53,7 +53,7 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'PATCH #update' do
     before { login(user) }
-    let(:answer) { create(:answer, question: question) }
+    let(:answer) { create(:answer, question: question, user: user) }
 
     context 'with valid attributes' do
       it 'changes answer attributes' do
@@ -81,6 +81,23 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to render_template :update
       end
 
+    end
+  end
+
+  describe 'PATCH #choose_best' do
+    before { login(user) }
+    let(:question) { create(:question, user: user) }
+    let(:answer) { create(:answer, question: question) }
+
+    it 'changes answer attributes' do
+      patch :choose_best, params: { id: answer, best_answer: true }, format: :js
+      answer.reload
+      expect(answer.best_answer).to be_truthy
+    end
+
+    it 'renders choose_best template' do
+      patch :choose_best, params: { id: answer }, format: :js
+      expect(response).to render_template :choose_best
     end
   end
 

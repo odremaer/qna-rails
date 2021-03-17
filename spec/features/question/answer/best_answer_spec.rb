@@ -24,10 +24,10 @@ feature 'User can pick the best answer', %q{
       visit question_path(question)
 
       within '.answers' do
-        page.check("answer[best_answer]")
+        page.check("best_answer")
         click_on 'Submit'
 
-        expect(page).to have_checked_field("answer[best_answer]")
+        expect(page).to have_checked_field("best_answer")
         expect(page).to have_content answer.body
       end
     end
