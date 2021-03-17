@@ -5,10 +5,10 @@ class Question < ApplicationRecord
   validates :title, :body, presence: true
 
   def have_two_best_answers?
-    true if self.answers.where(best_answer: true).count == 2
+    true if answers.where(best_answer: true).count == 2
   end
 
   def previous_best_answer
-    self.answers.find_by(best_answer: true)
+    answers.find_by(best_answer: true)
   end
 end

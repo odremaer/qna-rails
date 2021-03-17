@@ -28,9 +28,7 @@ class AnswersController < ApplicationController
     @question = @answer.question
 
     if current_user.author_of?(@question)
-      @answer.update(params.permit(:best_answer))
-      @answer.change_best_answer
-      @question.reload
+      @answer.set_best_answer(params)
     end
   end
 
