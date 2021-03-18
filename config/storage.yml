@@ -6,7 +6,7 @@ test:
 google_dev:
   service: GCS
   project: rails-qna
-  credentials: <%= Rails.root.join("config/secrets/rails-qna.json") %>
+  credentials: <%= Rails.root.join("config/secrets/qna.json") %>
   bucket: qna-pics-bucket
 
 # local:

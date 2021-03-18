@@ -39,4 +39,4 @@ yarn-debug.log*
 /config/database.yml
 
 # Ignore secret keys
-  /config/secrets/*
+/config/secrets/*
