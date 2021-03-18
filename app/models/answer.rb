@@ -4,6 +4,8 @@ class Answer < ApplicationRecord
   belongs_to :question
   belongs_to :user
 
+  has_many_attached :files
+
   validates :body, presence: true
   after_commit :after_commit_validate_that_second_best_answer_dont_exists
 

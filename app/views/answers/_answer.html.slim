@@ -1,6 +1,10 @@
 - if answer.persisted?
   li id=answer.id
     = answer.body
+    - if answer.files.attached?
+      - answer.files.each do |file|
+        p= link_to file.filename.to_s, url_for(file)
+        
     - if current_user&.author_of?(answer)
       = link_to 'Delete answer',
         answer_path(answer),
