@@ -32,13 +32,6 @@ class AnswersController < ApplicationController
     end
   end
 
-  def delete_image_attachment
-    @image = ActiveStorage::Attachment.find(params[:id])
-    @image.purge
-    @answer = Answer.find(@image.record_id)
-    render :update
-  end
-
   private
 
   def answer_params
