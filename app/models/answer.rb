@@ -9,11 +9,11 @@ class Answer < ApplicationRecord
 
   def set_best_answer(params)
     transaction do
-      update(params.permit(:best_answer))
+      update!(params.permit(:best_answer))
 
       if question.have_two_best_answers?
         previous_best_answer = question.previous_best_answer
-        previous_best_answer.update(best_answer: false)
+        previous_best_answer.update!(best_answer: false)
       end
     end
   end
