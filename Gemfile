@@ -35,6 +35,8 @@ gem 'jquery-rails'
 # fixed the "Autoprefixer doesn’t support Node v8.10.0. Update it." error
 gem 'mini_racer'
 
+gem "google-cloud-storage", "~> 1.8", require: false
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
