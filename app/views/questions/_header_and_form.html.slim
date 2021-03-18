@@ -14,6 +14,10 @@ p= @question.body
     = form_with model: @question, local: false, class: 'hidden', html: { id: "edit-question" } do |f|
       = f.label :title, 'Title of your question'
       = f.text_area :title
+
       = f.label :body, 'Your question'
       = f.text_area :body
-      = f.submit 'Save'
+
+      = f.label :files
+      = f.file_field :files, multiple: true
+      p= f.submit 'Save'

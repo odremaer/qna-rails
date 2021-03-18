@@ -4,7 +4,7 @@
     - if answer.files.attached?
       - answer.files.each do |file|
         p= link_to file.filename.to_s, url_for(file)
-        
+
     - if current_user&.author_of?(answer)
       = link_to 'Delete answer',
         answer_path(answer),
@@ -17,7 +17,10 @@
       = form_with model: answer, local: false, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
         = f.label :body, 'Your answer'
         = f.text_area :body
-        = f.submit 'Save'
+
+        = f.label :files
+        = f.file_field :files, multiple: true
+        p= f.submit 'Save'
 
     - if current_user&.author_of?(answer.question)
       = form_with url: choose_best_answer_path(answer), local: false, method: :patch do |f|
