@@ -9,10 +9,7 @@ p= @question.body
     = link_to 'Delete image', attachment_url(file), method: :delete, remote: true
 
 .links
-  p Links:
-  ul
-    - @question.links.each do |link|
-      li= link_to link.name, link.url
+  = render 'shared/links', resource: @question
 
 - if current_user&.author_of?(@question)
   p
