@@ -9,7 +9,7 @@
         = link_to 'Delete image', attachment_url(file), method: :delete, remote: true
 
     .links
-      = render 'shared/links', resource: answer
+      = render 'links/links', resource: answer
 
     - if current_user&.author_of?(answer)
       p
@@ -27,6 +27,7 @@
 
         = f.label :files
         = f.file_field :files, multiple: true, direct_upload: true
+        = render 'links/links_form', f: f
         p= f.submit 'Save'
 
     - if current_user&.author_of?(answer.question)

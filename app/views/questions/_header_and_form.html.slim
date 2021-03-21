@@ -9,7 +9,7 @@ p= @question.body
     = link_to 'Delete image', attachment_url(file), method: :delete, remote: true
 
 .links
-  = render 'shared/links', resource: @question
+  = render 'links/links', resource: @question
 
 - if current_user&.author_of?(@question)
   p
@@ -19,12 +19,15 @@ p= @question.body
     = render 'shared/errors', resource: @question
 
     = form_with model: @question, local: false, class: 'hidden', html: { id: "edit-question" } do |f|
-      = f.label :title, 'Title of your question'
-      = f.text_area :title
+      p
+        = f.label :title, 'Title of your question'
+        = f.text_area :title
+      p
+        = f.label :body, 'Your question'
+        = f.text_area :body
+      p
+        = f.label :files
+        = f.file_field :files, multiple: true, direct_upload: true
 
-      = f.label :body, 'Your question'
-      = f.text_area :body
-
-      = f.label :files
-      = f.file_field :files, multiple: true, direct_upload: true
+      = render 'links/links_form', f: f
       p= f.submit 'Save'
