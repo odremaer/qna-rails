@@ -5,5 +5,5 @@ ul
       script src="#{link.url}.js"
     - else
       li= link_to link.name, link.url
-    - if current_user.author_of?(link.linkable)
+    - if current_user&.author_of?(link.linkable)
       = link_to 'Delete link', link_url(link), method: :delete, remote: true
