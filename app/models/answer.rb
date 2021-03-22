@@ -21,6 +21,10 @@ class Answer < ApplicationRecord
         previous_best_answer = question.previous_best_answer
         previous_best_answer.update!(best_answer: false)
       end
+
+      if question.award
+        question.award.give_award_to_user(user)
+      end
     end
   end
 

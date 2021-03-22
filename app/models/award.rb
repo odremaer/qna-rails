@@ -7,6 +7,6 @@ class Award < ApplicationRecord
   validates :title, presence: true
 
   def give_award_to_user(user)
-    user.awards.push(self)
+    self.update!(user: user)
   end
 end
