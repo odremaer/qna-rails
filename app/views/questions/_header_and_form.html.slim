@@ -8,6 +8,11 @@ p= @question.body
     br
     = link_to 'Delete image', attachment_url(file), method: :delete, remote: true
 
+- if @question.award&.image&.attached?
+  p Award for best answer:
+  = image_tag @question.award.image.representation(resize_to_limit: [100, 100])
+  p= @question.award.title
+
 .links
   = render 'links/links', resource: @question
 

@@ -10,6 +10,17 @@
   p
     = f.label :files
     = f.file_field :files, multiple: true, direct_upload: true
+
+  p Award:
+  .image-form
+    = f.fields_for :award do |l|
+      p
+        = l.label :title, 'Image title'
+        = l.text_field :title
+      p
+        = l.label :image
+        = l.file_field :image, direct_upload: true
+
   = render 'links/links_form', f: f
 
   p= f.submit 'Ask'

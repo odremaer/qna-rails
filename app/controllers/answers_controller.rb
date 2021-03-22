@@ -29,6 +29,9 @@ class AnswersController < ApplicationController
 
     if current_user.author_of?(@question)
       @answer.set_best_answer(params)
+      if @question.award
+        @question.award.give_award_to_user(@answer.user)
+      end
     end
   end
 

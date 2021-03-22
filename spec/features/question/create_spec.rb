@@ -43,6 +43,22 @@ feature 'User can create question', %q{
       expect(page).to have_link 'rails_helper.rb'
       expect(page).to have_link 'spec_helper.rb'
     end
+
+    scenario 'asks a question with award for best answer' do
+      fill_in 'Title', with: 'Test question'
+      fill_in 'Body', with: 'text text'
+
+      within '.image-form' do
+        fill_in 'Image title', with: 'award title'
+        attach_file 'Image', "#{Rails.root}/app/assets/images/fist.jpg"
+      end
+
+      click_on 'Ask'
+
+      expect(page).to have_content 'award title'
+      expect(page).to have_selector "img[src$='fist.jpg']"
+    end
+
   end
 
   scenario 'Unautheticated user tries to ask a question' do
