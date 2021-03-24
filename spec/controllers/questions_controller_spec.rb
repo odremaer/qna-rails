@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
+  it_behaves_like 'voted'
+
   let(:question) { create(:question) }
   let(:user) { create(:user) }
   describe 'GET #index' do
@@ -38,7 +40,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #new' do
-    before { login(user) }
+      before { login(user) }
 
     before { get :new }
 

@@ -1,6 +1,9 @@
 - if answer.persisted?
   li id=answer.id
     = answer.body
+
+    = render 'shared/vote', votable: answer
+
     - if answer.files.attached?
       - answer.files.each do |file|
         br

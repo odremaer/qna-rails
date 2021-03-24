@@ -1,4 +1,6 @@
 class Answer < ApplicationRecord
+  include Votable
+
   default_scope { order(best_answer: :desc) }
 
   belongs_to :question
@@ -20,6 +22,10 @@ class Answer < ApplicationRecord
       if question.have_two_best_answers?
         previous_best_answer = question.previous_best_answer
         previous_best_answer.update!(best_answer: false)
+      end
+
+      if question.award
+        question.award.give_award_to_user(user)
       end
     end
   end

@@ -1,4 +1,6 @@
 class AnswersController < ApplicationController
+  include Voted
+
   before_action :authenticate_user!
   before_action :set_answer, only: %i[ destroy update choose_best ]
 
@@ -29,9 +31,6 @@ class AnswersController < ApplicationController
 
     if current_user.author_of?(@question)
       @answer.set_best_answer(params)
-      if @question.award
-        @question.award.give_award_to_user(@answer.user)
-      end
     end
   end
 
