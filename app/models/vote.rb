@@ -7,6 +7,6 @@ class Vote < ApplicationRecord
   private
 
   def validate_author_of_votable
-    errors.add(:vote, "You can't vote for this because you are author") if votable&.user == user
+    errors.add(:vote, "You can't vote for this because you are author") if votable && user.author_of?(votable)
   end
 end

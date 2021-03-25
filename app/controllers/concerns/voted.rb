@@ -7,55 +7,51 @@ module Voted
 
 
   def upvote
-    vote = current_user.vote(value: 1, votable: @votable)
+    vote = @votable.vote(value: 1, user: current_user)
 
     respond_to do |format|
-      if vote.nil? || vote.save
-        format.json {
+      format.json do
+        if vote.valid?
           render json: {
             obj_id: @votable.id,
             obj: @votable.class.to_s,
             rating: @votable.rating
           }
-        }
-      else
-        format.json {
+        else
           render json: {
             error: vote.errors.full_messages,
             obj_id: @votable.id,
             obj: @votable.class.to_s
           }, status: :unprocessable_entity
-        }
+        end
       end
     end
   end
 
   def downvote
-    vote = current_user.vote(value: -1, votable: @votable)
+    vote = @votable.vote(value: -1, user: current_user)
 
     respond_to do |format|
-      if vote.nil? || vote.save
-        format.json {
+      format.json do
+        if vote.valid?
           render json: {
             obj_id: @votable.id,
             obj: @votable.class.to_s,
             rating: @votable.rating
           }
-        }
-      else
-        format.json {
+        else
           render json: {
             error: vote.errors.full_messages,
             obj_id: @votable.id,
-            obj: @votable.class.to_s,
+            obj: @votable.class.to_s
           }, status: :unprocessable_entity
-        }
+        end
       end
     end
   end
 
   def undo_vote
-    current_user.undo_vote(@votable)
+    @votable.undo_vote(current_user)
 
     respond_to do |format|
       format.json {
