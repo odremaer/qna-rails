@@ -4,6 +4,8 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[ index show ]
   before_action :set_question, only: %i[ show update ]
 
+  after_action :publish_question, only: %i[ create ]
+
   expose :questions, ->{ Question.all }
   expose :question
 
@@ -60,5 +62,19 @@ class QuestionsController < ApplicationController
 
   def set_question
     @question = Question.with_attached_files.find(params[:id])
+
+    gon.question_id = @question.id
+  end
+
+  def publish_question
+    return if @question.errors.any?
+
+    ActionCable.server.broadcast(
+      'questions',
+      ApplicationController.render(
+        partial: 'questions/question',
+        locals: { question: @question }
+      )
+     )
   end
 end
