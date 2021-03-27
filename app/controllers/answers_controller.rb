@@ -51,10 +51,5 @@ class AnswersController < ApplicationController
     return if @answer.errors.any?
 
     ActionCable.server.broadcast("answers_#{@answer.question.id}", @answer)
-      # ApplicationController.render(
-      #   partial: 'questions/question',
-      #   locals: { question: @question }
-      # )
-
   end
 end
