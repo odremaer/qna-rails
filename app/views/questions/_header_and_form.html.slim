@@ -18,6 +18,12 @@ p= @question.body
 .links
   = render 'links/links', resource: @question
 
+ul
+  div class="question-comments-#{question.id}"
+    = render @question.comments
+    - if current_user
+      = render 'comments/form', commentable: @question
+
 - if current_user&.author_of?(@question)
   p
   = link_to 'Delete question', question_path(@question), method: :delete
