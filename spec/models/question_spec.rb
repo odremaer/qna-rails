@@ -12,6 +12,8 @@ RSpec.describe Question, type: :model do
   it { should accept_nested_attributes_for :links }
   it { should accept_nested_attributes_for :award }
 
+  it_behaves_like 'votable'
+
   describe 'best answer methods' do
     let(:first_question) { create(:question) }
     let(:second_question) { create(:question) }

@@ -5,8 +5,16 @@ Rails.application.routes.draw do
   resources :links, only: %i[ destroy ]
   resources :awards, only: %i[ index ]
 
-  resources :questions do
-    resources :answers, shallow: true do
+  concern :votable do
+    member do
+      post :upvote
+      post :downvote
+      delete :undo_vote
+    end
+  end
+
+  resources :questions, concerns: %i[ votable ] do
+    resources :answers, concerns: %i[ votable ], shallow: true do
       member do
         patch :choose_best
       end

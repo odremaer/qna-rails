@@ -4,6 +4,8 @@ class User < ApplicationRecord
 
   has_many :awards, dependent: :destroy
 
+  has_many :votes, dependent: :destroy
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
