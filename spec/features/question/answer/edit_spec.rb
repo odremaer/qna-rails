@@ -25,24 +25,24 @@ feature 'User can edit his answer', %q{
       end
 
       scenario 'edits his answer' do
-        click_on 'Edit'
-
         within '.answers' do
-          fill_in 'Your answer', with: 'edited answer'
+          click_on 'Edit'
+          field = find('textarea', id: "answer-edit-textarea")
+          field.value.length.times { field.send_keys [:backspace] }
+          field.send_keys('edited answer')
 
           click_on 'Save'
 
           expect(page).to_not have_content answer.body
           expect(page).to have_content 'edited answer'
-          expect(page).to_not have_selector 'textarea'
+          expect(page).to_not have_selector 'textarea#answer-edit-textarea'
         end
       end
 
       scenario 'edits his answer with errors' do
-        click_on 'Edit'
-
         within '.answers' do
-          field = find('textarea')
+          click_on 'Edit'
+          field = find('textarea', id: "answer-edit-textarea")
           field.value.length.times { field.send_keys [:backspace] }
           # field.native.clear
           click_on 'Save'
