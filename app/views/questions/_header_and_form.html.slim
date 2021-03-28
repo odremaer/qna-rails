@@ -8,7 +8,8 @@ p= @question.body
     br
     = link_to file.filename.to_s, url_for(file)
     br
-    = link_to 'Delete image', attachment_url(file), method: :delete, remote: true
+    - if can? :destroy, file
+      = link_to 'Delete file', attachment_url(file), method: :delete, remote: true
 
 - if @question.award&.image&.attached?
   p Award for best answer:
@@ -21,13 +22,15 @@ p= @question.body
 ul
   div class="question-comments-#{question.id}"
     = render @question.comments
-    - if current_user
+    - if can? :create, Comment
       = render 'comments/form', commentable: @question
 
-- if current_user&.author_of?(@question)
+- if can? :destroy, @question
   p
   = link_to 'Delete question', question_path(@question), method: :delete
-  br = link_to 'Edit', '#', class: 'edit-question-link'
+
+- if can? :update, @question
+  = link_to 'Edit', '#', class: 'edit-question-link'
   .question-errors
     = render 'shared/errors', resource: @question
 

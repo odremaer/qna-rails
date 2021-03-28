@@ -9,7 +9,8 @@
         br
         = link_to file.filename.to_s, url_for(file)
         br
-        = link_to 'Delete image', attachment_url(file), method: :delete, remote: true
+        - if can? :destroy, file
+          = link_to 'Delete file', attachment_url(file), method: :delete, remote: true
 
     .links
       = render 'links/links', resource: answer
@@ -17,10 +18,10 @@
     ul
       div class="answer-comments-#{answer.id}"
         = render answer.comments
-        - if current_user
+        - if can? :create, Comment
           = render 'comments/form', commentable: answer
 
-    - if current_user&.author_of?(answer)
+    - if can? :destroy, answer
       p
       = link_to 'Delete answer',
         answer_path(answer),
@@ -39,7 +40,7 @@
         = render 'links/links_form', f: f
         p= f.submit 'Save'
 
-    - if current_user&.author_of?(answer.question)
+    - if can? :choose_best, answer
       = form_with url: choose_best_answer_path(answer), local: false, method: :patch do |f|
         = f.label :best_answer
         = f.check_box :best_answer, id: "answer_id#{answer.id}"

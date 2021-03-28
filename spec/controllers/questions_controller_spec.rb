@@ -99,13 +99,14 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'not author' do
+      let!(:question) { create(:question) }
       it 'does not delete question' do
         expect { delete :destroy, params: {id: question} }.to_not change(Question, :count)
       end
 
       it 'redirects to current question' do
         delete :destroy, params: {id: question}
-        expect(response).to redirect_to assigns(:question)
+        expect(response).to redirect_to root_url
       end
     end
   end

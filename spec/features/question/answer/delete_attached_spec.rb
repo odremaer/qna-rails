@@ -25,7 +25,7 @@ feature 'Author can delete files that attached to answer', %q{
 
       expect(page).to have_link 'rails_helper.rb'
 
-      click_on 'Delete image'
+      click_on 'Delete file'
 
       expect(page).to_not have_link 'rails_helper.rb'
     end
