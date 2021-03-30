@@ -31,6 +31,8 @@ RSpec.describe Ability, type: :model do
     let(:link) { create(:link, linkable: question) }
     let!(:link_with_another_linkable_author) { create(:link, linkable: question_with_another_author) }
 
+    let(:vote) { create(:vote, votable: question_with_another_author, value: 1, user: user) }
+
     it { should be_able_to :read, :all }
 
     it { should be_able_to :create, Question }
@@ -51,7 +53,7 @@ RSpec.describe Ability, type: :model do
 
     it { should be_able_to :upvote, question_with_another_author }
     it { should be_able_to :downvote, question_with_another_author }
-    it { should be_able_to :undo_vote, question_with_another_author }
+    it { should be_able_to :undo_vote, vote.votable }
 
     # because user is author of question
     it { should_not be_able_to :upvote, question }

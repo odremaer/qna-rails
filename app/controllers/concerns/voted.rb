@@ -51,6 +51,7 @@ module Voted
   end
 
   def undo_vote
+    authorize! :undo_vote, @votable
     @votable.undo_vote(current_user)
 
     respond_to do |format|

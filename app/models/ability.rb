@@ -22,8 +22,20 @@ class Ability
     can :update, [Question, Answer], user_id: user.id
     can :destroy, [Question, Answer], user_id: user.id
 
-    can [:upvote, :downvote, :undo_vote], [Question, Answer] do |votable|
-      true unless user.author_of?(votable)
+    can :vote, [Question, Answer] do |votable|
+      !user.author_of?(votable)
+    end
+
+    can [:upvote, :downvote], [Question, Answer] do |votable|
+      !user.author_of?(votable)
+    end
+
+    can :undo_vote, [Question, Answer] do |votable|
+      if votable.votes.first
+        user.author_of?(votable.votes.first)
+      else
+        false
+      end
     end
 
     can :choose_best, Answer do |answer|
