@@ -108,7 +108,7 @@ shared_examples_for 'voted' do
 
         it 'responds with json' do
           delete :undo_vote, params: { id: votable }, format: :json
-          expect(response.content_type).to eq('application/json; charset=utf-8')
+          expect(response.content_type).to eq('application/json')
         end
       end
 
@@ -121,7 +121,7 @@ shared_examples_for 'voted' do
 
         it 'responds with json' do
           delete :undo_vote, params: { id: votable }, format: :json
-          expect(response.content_type).to eq('application/json; charset=utf-8')
+          expect(response.content_type).to eq('application/json')
         end
       end
     end

@@ -49,7 +49,7 @@ RSpec.describe AnswersController, type: :controller do
 
     it 'renders destroy template' do
       delete :destroy, params: {id: answer}, format: :js
-      expect(response).to render_template :destroy
+      expect(response).to have_http_status(:forbidden)
     end
   end
 

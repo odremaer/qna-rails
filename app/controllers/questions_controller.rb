@@ -36,20 +36,14 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    if current_user.author_of?(question)
-      flash[:notice] = 'Question deleted successfully'
-      question.destroy
-      redirect_to questions_path
-    else
-      flash[:notice] = 'You are not author of this question'
-      redirect_to question_path(question)
-    end
+    authorize! :destroy, question
+    question.destroy
+    redirect_to questions_path, notice: 'Question deleted successfully'
   end
 
   def update
-    if current_user.author_of?(@question)
-      @question.update(question_params)
-    end
+    authorize! :update, @question
+    @question.update(question_params)
   end
 
   private

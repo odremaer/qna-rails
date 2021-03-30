@@ -3,22 +3,22 @@ div class="vote-rating-#{votable.class.to_s}-#{votable.id}" id="vote-rating"
 
 div class="vote-errors-#{votable.class.to_s}-#{votable.id}"
 
-- if current_user.present? && !current_user.author_of?(votable)
+- if can? :vote, votable
   .vote-links
     .upvote
-      = link_to 'upvote', polymorphic_path(votable, action: 'upvote'),
-                remote: true,
-                method: :post,
-                data: { type: :json }
+        = link_to 'upvote', polymorphic_path(votable, action: 'upvote'),
+                  remote: true,
+                  method: :post,
+                  data: { type: :json }
 
     .downvote
-      = link_to 'downvote', polymorphic_path(votable, action: 'downvote'),
-                remote: true,
-                method: :post,
-                data: { type: :json }
+        = link_to 'downvote', polymorphic_path(votable, action: 'downvote'),
+                  remote: true,
+                  method: :post,
+                  data: { type: :json }
 
     .undo-vote
-      = link_to 'undo vote', polymorphic_path(votable, action: 'undo_vote'),
-                remote: true,
-                method: :delete,
-                data: { type: :json }
+        = link_to 'undo vote', polymorphic_path(votable, action: 'undo_vote'),
+                  remote: true,
+                  method: :delete,
+                  data: { type: :json }
