@@ -91,4 +91,59 @@ describe 'Questions API', type: :request do
       end
     end
   end
+
+  describe 'POST /api/v1/questions' do
+
+    let(:headers) {
+      {
+        "ACCEPT" => "application/json"
+      }
+    }
+
+    let(:access_token) { create(:access_token) }
+    let(:method) { :post }
+    let(:api_path) { "/api/v1/questions" }
+
+    let(:valid_attributes) { { access_token: access_token.token, question: attributes_for(:question) } }
+    let(:invalid_attributes) { { access_token: access_token.token, question: attributes_for(:question, :invalid_question) } }
+
+    before { do_request(method, api_path, params: valid_attributes, headers: headers) }
+
+    it_behaves_like 'API Authorizable'
+
+    context 'Authorized' do
+      let(:access_token) { create(:access_token) }
+      let(:question_response) { json['question'] }
+
+      context 'With valid attributes' do
+        it 'saves a new question in the database' do
+          expect{ do_request(method, api_path, params: valid_attributes, headers: headers) }.to change(Question, :count).by(1)
+        end
+
+        it 'return status 200' do
+          do_request(method, api_path, params: valid_attributes, headers: headers)
+          expect(response).to be_successful
+        end
+
+        it 'returns question fields' do
+          do_request(method, api_path, params: valid_attributes, headers: headers)
+
+          %w[id title body created_at updated_at].each do |attr|
+            expect(question_response[attr]).to eq assigns(:question).send(attr).as_json
+          end
+        end
+      end
+
+      context 'With invalid attributes' do
+        it "does't save new question in the database" do
+          expect{ do_request(method, api_path, params: invalid_attributes, headers: headers) }.to_not change(Question, :count)
+        end
+
+        it 'returns unprocessable_entity(422)' do
+          do_request(method, api_path, params: invalid_attributes, headers: headers)
+          expect(response).to have_http_status(422) #unprocessable_entity
+        end
+      end
+    end
+  end
 end
