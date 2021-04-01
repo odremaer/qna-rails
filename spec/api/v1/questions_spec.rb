@@ -60,21 +60,13 @@ describe 'Questions API', type: :request do
 
   describe 'GET /api/v1/questions/:id' do
     let(:question) { create(:question) }
-    it_should_behave_like 'API Authorizable' do
-      let(:method) { :get }
-      let(:api_path) { "/api/v1/questions/#{question.id}" }
-    end
+    let(:api_path) { "/api/v1/questions/#{question.id}" }
+    let(:method) { :get }
+
+    it_should_behave_like 'API Authorizable'
 
     context 'authorized' do
       let(:access_token) { create(:access_token) }
-
-      let!(:comments) { create_list(:comment, 3, commentable: question) }
-      let(:comment) { comments.first }
-      let(:comment_response) { json['question']['comments'].first }
-
-      let!(:links) { create_list(:link, 2, linkable: question) }
-      let(:link) { links.first }
-      let(:link_response) { json['question']['links'].first }
 
       before { get "/api/v1/questions/#{question.id}", params: { access_token: access_token.token }, headers: headers }
 
@@ -82,47 +74,20 @@ describe 'Questions API', type: :request do
         expect(response).to be_successful
       end
 
-      context 'comments' do
-        it 'returns list of comments' do
-          expect(json['question']['comments'].size).to eq 3
-        end
-
-        it 'returns comments fields' do
-          %w[id body created_at updated_at].each do |attr|
-            expect(comment_response[attr]).to eq comment.send(attr).as_json
-          end
-        end
+      it_should_behave_like 'API Commentable' do
+        let(:commentable) { question }
+        let(:comment_response) { json['question'] }
       end
 
-      context 'links' do
-        it 'returns list of comments' do
-          expect(json['question']['links'].size).to eq 2
-        end
-
-        it 'returns comments fields' do
-          %w[id name url created_at updated_at].each do |attr|
-            expect(link_response[attr]).to eq link.send(attr).as_json
-          end
-        end
+      it_should_behave_like 'API Linkable' do
+        let(:linkable) { question }
+        let(:link_response) { json['question'] }
       end
 
-      context 'files' do
-        before do
-          question.files.attach(
-            io: File.open(Rails.root.join('spec', 'rails_helper.rb')),
-            filename: 'rails_helper.rb'
-          )
-          question.files.attach(
-            io: File.open(Rails.root.join('spec', 'spec_helper.rb')),
-            filename: 'spec_helper.rb'
-          )
-          get "/api/v1/questions/#{question.id}", params: { access_token: access_token.token }, headers: headers
-        end
 
-        it 'returns list of files' do
-          expect(json['question']['files'].size).to eq question.files.size
-        end
-
+      it_should_behave_like 'API Fileable' do
+        let(:fileable) { question }
+        let(:file_response) { json['question'] }
       end
     end
   end
