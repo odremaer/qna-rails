@@ -146,4 +146,67 @@ describe 'Questions API', type: :request do
       end
     end
   end
+
+  describe 'DELETE /api/v1/questions/:id' do
+    let(:headers) {
+      {
+        "ACCEPT" => "application/json"
+      }
+    }
+
+    let(:question) { create(:question) }
+    let(:method) { :delete }
+    let(:api_path) { "/api/v1/questions/#{question.id}" }
+
+    it_behaves_like "API Authorizable"
+
+    context 'authorized' do
+      let(:access_token) { create(:access_token) }
+
+      it 'deletes the question' do
+        expect {
+          do_request(method, api_path, params: { access_token: access_token.token, resource_owner_id: question.user.id }, headers: headers)
+        }.to change(question.user.questions, :count).by(-1)
+      end
+
+      it 'returns status 200' do
+        do_request(method, api_path, params: { access_token: access_token.token }, headers: headers)
+        expect(response).to be_successful
+      end
+    end
+  end
+
+  describe 'PATCH /api/v1/questions/:id' do
+    let(:headers) {
+      {
+        "ACCEPT" => "application/json"
+      }
+    }
+
+    let(:question) { create(:question) }
+    let(:valid_attributes) { { access_token: access_token.token, question: attributes_for(:question) } }
+    let(:invalid_attributes) { { access_token: access_token.token, question: attributes_for(:question, :invalid_question) } }
+
+    let(:method) { :patch }
+    let(:api_path) { "/api/v1/questions/#{question.id}" }
+
+    it_behaves_like "API Authorizable"
+
+    context 'authorized' do
+      let(:access_token) { create(:access_token) }
+      context 'with valid attributes' do
+        it 'edits the question' do
+          do_request(method, api_path, params: valid_attributes, headers: headers)
+          question.reload
+          expect(question.title).to eq valid_attributes[:question][:title]
+        end
+
+        it 'returns status 200' do
+          do_request(method, api_path, params: valid_attributes, headers: headers)
+          question.reload
+          expect(response).to be_successful
+        end
+      end
+    end
+  end
 end
