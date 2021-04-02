@@ -18,4 +18,12 @@ RSpec.describe User, type: :model do
   it 'should return false if user is not an author' do
     expect(user).to_not be_author_of(question)
   end
+
+  describe '#all_except' do
+    let(:users) { create_list(:user, 3) }
+    let(:user) { users.first }
+    it 'should return all existed users except the appointed one' do
+      expect(User.all_except(user)).to_not include user
+    end
+  end
 end
