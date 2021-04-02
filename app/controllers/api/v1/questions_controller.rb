@@ -1,4 +1,6 @@
 class Api::V1::QuestionsController < Api::V1::BaseController
+  before_action :set_question, only: %i[ show destroy update ]
+
   authorize_resource
 
   def index
@@ -7,7 +9,6 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def show
-    @question = Question.with_attached_files.find(params[:id])
     render json: @question, serializer: QuestionSerializer
   end
 
@@ -21,12 +22,10 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def destroy
-    @question = Question.with_attached_files.find(params[:id])
     @question.destroy
   end
 
   def update
-    @question = Question.with_attached_files.find(params[:id])
     if @question.update(question_params)
       render json: @question, serializer: QuestionSerializer
     else
@@ -38,5 +37,9 @@ class Api::V1::QuestionsController < Api::V1::BaseController
 
   def question_params
     params.require(:question).permit(:title, :body)
+  end
+
+  def set_question
+    @question = Question.with_attached_files.find(params[:id])
   end
 end
