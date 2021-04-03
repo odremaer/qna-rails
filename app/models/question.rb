@@ -7,6 +7,8 @@ class Question < ApplicationRecord
   has_many :answers, dependent: :destroy
   has_many :links, dependent: :destroy, as: :linkable
 
+  has_many :subscriptions, dependent: :destroy
+
   has_one :award, dependent: :destroy
 
   belongs_to :user
@@ -18,11 +20,19 @@ class Question < ApplicationRecord
 
   validates :title, :body, presence: true
 
+  after_commit :subscribe_author_for_question
+
   def have_two_best_answers?
     true if answers.where(best_answer: true).count == 2
   end
 
   def previous_best_answer
     answers.find_by(best_answer: true)
+  end
+
+  private
+
+  def subscribe_author_for_question
+    subscriptions.create(user: self.user)
   end
 end
