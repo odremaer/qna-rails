@@ -20,7 +20,7 @@ class Question < ApplicationRecord
 
   validates :title, :body, presence: true
 
-  after_commit :subscribe_author_for_question
+  after_create :subscribe_author_for_question
 
   def have_two_best_answers?
     true if answers.where(best_answer: true).count == 2
