@@ -8,6 +8,8 @@ class User < ApplicationRecord
 
   has_many :votes, dependent: :destroy
 
+  has_many :subscriptions, dependent: :destroy
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
@@ -17,5 +19,9 @@ class User < ApplicationRecord
 
   def admin?
     admin == true
+  end
+
+  def subscribed?(question)
+    subscriptions.where(question: question).present?
   end
 end

@@ -33,11 +33,15 @@ RSpec.describe Ability, type: :model do
 
     let(:vote) { create(:vote, votable: question_with_another_author, value: 1, user: user) }
 
+    let(:subscription) { create(:subscription, user: user) }
+    let(:subscription_with_not_subscribed_user) { create(:subscription)  }
+
     it { should be_able_to :read, :all }
 
     it { should be_able_to :create, Question }
     it { should be_able_to :create, Answer }
     it { should be_able_to :create, Comment }
+    it { should be_able_to :create, Subscription }
 
     it { should be_able_to :update, question }
     it { should be_able_to :update, answer }
@@ -84,6 +88,7 @@ RSpec.describe Ability, type: :model do
     it { should be_able_to :destroy, link }
     it { should_not be_able_to :destroy, link_with_another_linkable_author }
 
-
+    it { should be_able_to :destroy, subscription }
+    it { should_not be_able_to :destroy, subscription_with_not_subscribed_user }
   end
 end

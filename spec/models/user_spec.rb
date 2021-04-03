@@ -5,6 +5,7 @@ RSpec.describe User, type: :model do
   it { should have_many(:answers).dependent(:destroy) }
   it { should have_many(:awards).dependent(:destroy) }
   it { should have_many(:votes).dependent(:destroy) }
+  it { should have_many(:subscriptions).dependent(:destroy) }
 
   let(:user) { create(:user) }
   let(:question) { create(:question) }
@@ -36,6 +37,19 @@ RSpec.describe User, type: :model do
 
     it 'should return false if user is not admin' do
       expect(user).to_not be_admin
+    end
+  end
+
+  describe '#subscribed?' do
+    let(:subscription) { create(:subscription, question: question) }
+
+    it 'should return true if user subscribed to question' do
+      user.subscriptions.push(subscription)
+      expect(user).to be_subscribed(question)
+    end
+
+    it 'should return false if user not subscribed to question' do
+      expect(user).to_not be_subscribed(question)
     end
   end
 end
