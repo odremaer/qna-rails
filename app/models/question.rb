@@ -1,4 +1,6 @@
 class Question < ApplicationRecord
+  scope :recent_questions, -> { where("created_at > ?", 1.day.ago) }
+
   include Votable
   include Commentable
 

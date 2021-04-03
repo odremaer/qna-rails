@@ -26,4 +26,16 @@ RSpec.describe User, type: :model do
       expect(User.all_except(user)).to_not include user
     end
   end
+
+  describe '#admin?' do
+    let(:admin) { create(:user, admin: true) }
+
+    it 'should return true if user if admin' do
+      expect(admin).to be_admin
+    end
+
+    it 'should return false if user is not admin' do
+      expect(user).to_not be_admin
+    end
+  end
 end

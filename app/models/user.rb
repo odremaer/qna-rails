@@ -14,4 +14,8 @@ class User < ApplicationRecord
   def author_of?(object)
     object.user_id == self.id
   end
+
+  def admin?
+    admin == true
+  end
 end
