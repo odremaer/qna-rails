@@ -33,6 +33,6 @@ class Question < ApplicationRecord
   private
 
   def subscribe_author_for_question
-    subscriptions.create(user: self.user)
+    subscriptions.create(user: user)
   end
 end

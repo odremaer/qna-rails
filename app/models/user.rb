@@ -17,11 +17,7 @@ class User < ApplicationRecord
     object.user_id == self.id
   end
 
-  def admin?
-    admin == true
-  end
-
   def subscribed?(question)
-    subscriptions.where(question: question).present?
+    subscriptions.where(question: question).exists?
   end
 end

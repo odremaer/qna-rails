@@ -1,6 +1,6 @@
 - if current_user
   - if current_user.subscribed?(@question)
-    = link_to 'Unsubscribe', subscription_path(Subscription.certain_user_and_question(current_user, @question)), method: :delete
+    = link_to 'Unsubscribe', subscription_path(Subscription.for(current_user, @question)), method: :delete
   - else
     = link_to 'Subscribe', question_subscriptions_path(@question), method: :post
 

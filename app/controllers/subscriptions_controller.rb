@@ -3,9 +3,8 @@ class SubscriptionsController < ApplicationController
 
   def create
     authorize! :create, Subscription
-    @subscription = Subscription.new(question: @question, user: current_user)
+    @subscription = Subscription.create(question: @question, user: current_user)
 
-    @subscription.save
     redirect_to @subscription.question
   end
 

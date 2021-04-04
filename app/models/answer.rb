@@ -15,9 +15,9 @@ class Answer < ApplicationRecord
 
   validates :body, presence: true
 
-  after_commit :after_commit_validate_that_second_best_answer_dont_exists
+  after_commit :validate_that_second_best_answer_dont_exists
 
-  after_commit :send_notification_to_all_subscribers
+  after_commit :notify_subscribers
 
   def set_best_answer(params)
     transaction do
@@ -36,11 +36,11 @@ class Answer < ApplicationRecord
 
   private
 
-  def after_commit_validate_that_second_best_answer_dont_exists
+  def validate_that_second_best_answer_dont_exists
     errors.add(:question, "can't have more than one best answer") if question.have_two_best_answers?
   end
 
-  def send_notification_to_all_subscribers
+  def notify_subscribers
     NotificationAboutNewAnswerJob.perform_later(question)
   end
 end
